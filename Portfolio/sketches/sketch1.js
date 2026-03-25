@@ -84,6 +84,15 @@ class Fish {
     if (this.x > width) this.x = 0;
   }
 
+  eat(foodArray) {
+    for (let i = foodArray.length - 1; i >= 0; i--) {
+      let d = dist(this.x, this.y, foodArray[i].x, foodArray[i].y);
+      if (d < this.size / 2) {
+        foodArray.splice(i, 1);
+      }
+    }
+  }
+
   display() {
     push();
     translate(this.x, this.y);
