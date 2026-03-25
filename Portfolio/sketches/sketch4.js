@@ -44,12 +44,15 @@ function mousePressed() {
 }
 
 function touchStarted() {
-  launchFirework(touchX);
+  if (typeof touchX !== "undefined") {
+    launchFirework(touchX);
+  }
   return false;
 }
 
 function launchFirework(x) {
-  fireworks.push(new Firework(x, height));
+  const launchX = constrain(x, 12, width - 12);
+  fireworks.push(new Firework(launchX, height));
 }
 
 function handleCanvasPointer(clientX) {
@@ -60,12 +63,13 @@ function handleCanvasPointer(clientX) {
 function installCanvasInteractions() {
   const canvasElement = canvas.elt;
 
-  canvasElement.addEventListener("click", (event) => {
+  canvasElement.addEventListener("pointerdown", (event) => {
     handleCanvasPointer(event.clientX);
+    event.preventDefault();
   });
 
   canvasElement.addEventListener(
-    "touchend",
+    "touchstart",
     (event) => {
       const touch = event.changedTouches[0];
       if (!touch) return;
