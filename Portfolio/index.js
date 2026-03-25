@@ -6,6 +6,7 @@ const sketches = [
   { name: "Fireworks", fileName: "sketch4" },
 ];
 let bubbleImage;
+let canvas;
 
 function preload() {
   bubbleImage = loadImage("./img/bubble.png");
@@ -32,8 +33,9 @@ function createBubbles() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  canvas = createCanvas(windowWidth, windowHeight);
   createBubbles();
+  installCanvasNavigation();
 
   textAlign(CENTER, CENTER);
   textSize(min(windowWidth, windowHeight) < 700 ? 12 : 14);
@@ -140,28 +142,60 @@ class Bubble {
   }
 
   contains(px, py) {
-    return dist(px, py, this.x, this.y) <= this.r;
+    const hitPadding = min(windowWidth, windowHeight) < 700 ? 18 : 8;
+    return dist(px, py, this.x, this.y) <= this.r + hitPadding;
   }
 }
 
-function mousePressed() {
-  const clickedBubble = bubbles.find((bubble) =>
-    bubble.contains(mouseX, mouseY),
-  );
+function navigateToBubble(px, py) {
+  const clickedBubble = bubbles.find((bubble) => bubble.contains(px, py));
 
   if (clickedBubble) {
     window.location.href = `./sketches/${clickedBubble.fileName}.html`;
+    return true;
   }
+
+  return false;
+}
+
+function handleCanvasPointer(clientX, clientY) {
+  if (!canvas) return false;
+  const rect = canvas.elt.getBoundingClientRect();
+  const px = clientX - rect.left;
+  const py = clientY - rect.top;
+  return navigateToBubble(px, py);
+}
+
+function installCanvasNavigation() {
+  const canvasElement = canvas.elt;
+
+  canvasElement.addEventListener("click", (event) => {
+    handleCanvasPointer(event.clientX, event.clientY);
+  });
+
+  canvasElement.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+
+      if (handleCanvasPointer(touch.clientX, touch.clientY)) {
+        event.preventDefault();
+      }
+    },
+    { passive: false },
+  );
+}
+
+function mousePressed() {
+  return navigateToBubble(mouseX, mouseY);
 }
 
 function touchStarted() {
-  const tappedBubble = bubbles.find((bubble) =>
-    bubble.contains(touchX, touchY),
-  );
-
-  if (tappedBubble) {
-    window.location.href = `./sketches/${tappedBubble.fileName}.html`;
-    return false;
+  if (typeof touchX !== "undefined" && typeof touchY !== "undefined") {
+    if (navigateToBubble(touchX, touchY)) {
+      return false;
+    }
   }
 }
 

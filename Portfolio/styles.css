@@ -29,6 +29,7 @@ a {
 
 canvas {
   display: block;
+  touch-action: manipulation;
 }
 
 .title {
@@ -118,7 +119,7 @@ h1 {
   overflow: hidden;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   h1 {
     font-size: 1.9rem;
   }
