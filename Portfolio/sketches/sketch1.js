@@ -60,6 +60,7 @@ function draw() {
   // fish
   for (let i = 0; i < fish.length; i++) {
     fish[i].update();
+    fish[i].eat(food);
     fish[i].display();
   }
 }
@@ -96,7 +97,7 @@ class Fish {
   eat(foodArray) {
     for (let i = foodArray.length - 1; i >= 0; i--) {
       let d = dist(this.x, this.y, foodArray[i].x, foodArray[i].y);
-      if (d < this.size / 2) {
+      if (d < this.size) {
         foodArray.splice(i, 1);
       }
     }
