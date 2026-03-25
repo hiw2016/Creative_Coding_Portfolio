@@ -16,6 +16,7 @@ function setup() {
   const { width, height } = getCanvasSize();
   canvas = createCanvas(width, height);
   canvas.parent("canvasMount");
+  installCanvasInteractions();
 
   // fish
   for (let i = 0; i < 8; i++) {
@@ -69,6 +70,30 @@ function addFood(x, y) {
   for (let i = 0; i < 12; i++) {
     food.push(new Food(x + random(-15, 15), y));
   }
+}
+
+function handleCanvasPointer(clientX, clientY) {
+  const rect = canvas.elt.getBoundingClientRect();
+  addFood(clientX - rect.left, clientY - rect.top);
+}
+
+function installCanvasInteractions() {
+  const canvasElement = canvas.elt;
+
+  canvasElement.addEventListener("click", (event) => {
+    handleCanvasPointer(event.clientX, event.clientY);
+  });
+
+  canvasElement.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      handleCanvasPointer(touch.clientX, touch.clientY);
+      event.preventDefault();
+    },
+    { passive: false },
+  );
 }
 
 function mousePressed() {

@@ -117,6 +117,8 @@ h1 {
   height: auto !important;
   border-radius: 22px;
   overflow: hidden;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media (max-width: 768px) {

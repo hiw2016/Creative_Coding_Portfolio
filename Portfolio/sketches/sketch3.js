@@ -14,6 +14,7 @@ function setup() {
   const { width, height } = getCanvasSize();
   canvas = createCanvas(width, height);
   canvas.parent("canvasMount");
+  installCanvasInteractions();
 
   for (let i = 0; i < 10; i++) {
     balloons.push(new Balloon(random(width), random(height, height + 200)));
@@ -46,6 +47,30 @@ function popBalloons(x, y) {
       balloons[i].popped = true;
     }
   }
+}
+
+function handleCanvasPointer(clientX, clientY) {
+  const rect = canvas.elt.getBoundingClientRect();
+  popBalloons(clientX - rect.left, clientY - rect.top);
+}
+
+function installCanvasInteractions() {
+  const canvasElement = canvas.elt;
+
+  canvasElement.addEventListener("click", (event) => {
+    handleCanvasPointer(event.clientX, event.clientY);
+  });
+
+  canvasElement.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      handleCanvasPointer(touch.clientX, touch.clientY);
+      event.preventDefault();
+    },
+    { passive: false },
+  );
 }
 
 class Balloon {

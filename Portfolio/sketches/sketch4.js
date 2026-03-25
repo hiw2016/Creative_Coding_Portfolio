@@ -24,6 +24,7 @@ function setup() {
   const { width, height } = getCanvasSize();
   canvas = createCanvas(width, height);
   canvas.parent("canvasMount");
+  installCanvasInteractions();
 }
 
 function draw() {
@@ -49,6 +50,30 @@ function touchStarted() {
 
 function launchFirework(x) {
   fireworks.push(new Firework(x, height));
+}
+
+function handleCanvasPointer(clientX) {
+  const rect = canvas.elt.getBoundingClientRect();
+  launchFirework(clientX - rect.left);
+}
+
+function installCanvasInteractions() {
+  const canvasElement = canvas.elt;
+
+  canvasElement.addEventListener("click", (event) => {
+    handleCanvasPointer(event.clientX);
+  });
+
+  canvasElement.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      handleCanvasPointer(touch.clientX);
+      event.preventDefault();
+    },
+    { passive: false },
+  );
 }
 
 class Firework {
