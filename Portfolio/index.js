@@ -3,6 +3,7 @@ const sketches = [
   { name: "Aquarium", fileName: "sketch1" },
   { name: "Solar System", fileName: "sketch2" },
   { name: "Balloons", fileName: "sketch3" },
+  { name: "Fireworks", fileName: "sketch4" },
 ];
 let bubbleImage;
 

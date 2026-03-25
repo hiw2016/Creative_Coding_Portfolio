@@ -3,20 +3,9 @@ let food = [];
 let bubbles = [];
 let plants = [];
 let colors = ["#f4cfc7", "#e79796", "#ffbe98", "#ffc98b", "#c6c09c", "#c8d9e6"];
-let canvas;
-
-function getCanvasSize() {
-  const mount = document.getElementById("canvasMount");
-  return {
-    width: mount ? mount.clientWidth : windowWidth,
-    height: mount ? Math.max(420, window.innerHeight * 0.62) : windowHeight,
-  };
-}
 
 function setup() {
-  const { width, height } = getCanvasSize();
-  canvas = createCanvas(width, height);
-  canvas.parent("canvasMount");
+  createCanvas(windowWidth, windowHeight);
 
   // fish
   for (let i = 0; i < 8; i++) {
@@ -46,7 +35,6 @@ function draw() {
   for (let i = bubbles.length - 1; i >= 0; i--) {
     bubbles[i].update();
     bubbles[i].display();
-
     if (bubbles[i].y < 0) {
       bubbles.splice(i, 1);
     }
@@ -61,6 +49,7 @@ function draw() {
   // fish
   for (let i = 0; i < fish.length; i++) {
     fish[i].update();
+    fish[i].eat(food);
     fish[i].display();
   }
 }
@@ -83,6 +72,16 @@ class Fish {
   update() {
     this.x += this.speed;
     if (this.x > width) this.x = 0;
+  }
+
+  // Eat nearby food
+  eat(foodArray) {
+    for (let i = foodArray.length - 1; i >= 0; i--) {
+      let d = dist(this.x, this.y, foodArray[i].x, foodArray[i].y);
+      if (d < this.size / 2) {
+        foodArray.splice(i, 1);
+      }
+    }
   }
 
   display() {
@@ -156,9 +155,4 @@ class Plant {
     strokeWeight(5);
     line(this.x, this.y, this.x, this.y - this.height);
   }
-}
-
-function windowResized() {
-  const { width, height } = getCanvasSize();
-  resizeCanvas(width, height);
 }
