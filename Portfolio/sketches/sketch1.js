@@ -3,9 +3,19 @@ let food = [];
 let bubbles = [];
 let plants = [];
 let colors = ["#f4cfc7", "#e79796", "#ffbe98", "#ffc98b", "#c6c09c", "#c8d9e6"];
+let canvas;
+
+function getCanvasSize() {
+  const mount = document.getElementById("canvasMount");
+  const width = mount ? mount.clientWidth : 800;
+  const height = mount ? Math.min(width, window.innerHeight * 0.7) : 800;
+  return { width, height: Math.max(420, height) };
+}
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  const { width, height } = getCanvasSize();
+  canvas = createCanvas(width, height);
+  canvas.parent("canvasMount");
 
   // fish
   for (let i = 0; i < 8; i++) {

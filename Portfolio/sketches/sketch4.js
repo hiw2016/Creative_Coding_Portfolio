@@ -11,9 +11,19 @@ let colors = [
   "#a01a7d",
 ];
 
+let canvas;
+
+function getCanvasSize() {
+  const mount = document.getElementById("canvasMount");
+  const width = mount ? mount.clientWidth : 800;
+  const height = mount ? Math.min(width, window.innerHeight * 0.7) : 800;
+  return { width, height: Math.max(420, height) };
+}
+
 function setup() {
-  createCanvas(600, 600);
-  background(0);
+  const { width, height } = getCanvasSize();
+  canvas = createCanvas(width, height);
+  canvas.parent("canvasMount");
 }
 
 function draw() {
