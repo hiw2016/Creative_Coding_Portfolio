@@ -60,6 +60,7 @@ function draw() {
   // fish
   for (let i = 0; i < fish.length; i++) {
     fish[i].update();
+    fish[i].eat(food);
     fish[i].display();
   }
 }
