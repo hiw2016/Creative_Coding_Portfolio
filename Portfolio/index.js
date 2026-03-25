@@ -1,8 +1,8 @@
 let bubbles = [];
 const sketches = [
-  { name: "Nebula Garden", fileName: "nebula-garden" },
-  { name: "Signal Bloom", fileName: "signal-bloom" },
-  { name: "Tidal Memory", fileName: "tidal-memory" },
+  { name: "Aquarium", fileName: "sketch1" },
+  { name: "Solar System", fileName: "sketch2" },
+  { name: "Balloons", fileName: "sketch3" },
 ];
 let bubbleImage;
 
