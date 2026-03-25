@@ -16,7 +16,7 @@ let canvas;
 function getCanvasSize() {
   const mount = document.getElementById("canvasMount");
   const width = mount ? mount.clientWidth : 800;
-  const height = mount ? Math.min(width, window.innerHeight * 0.7) : 800;
+  const height = mount ? Math.max(420, window.innerHeight * 0.68) : 800;
   return { width, height: Math.max(420, height) };
 }
 
@@ -39,7 +39,16 @@ function draw() {
 }
 
 function mousePressed() {
-  fireworks.push(new Firework(mouseX, height));
+  launchFirework(mouseX);
+}
+
+function touchStarted() {
+  launchFirework(touchX);
+  return false;
+}
+
+function launchFirework(x) {
+  fireworks.push(new Firework(x, height));
 }
 
 class Firework {
@@ -131,4 +140,9 @@ class Particle {
     fill(this.color + hex(floor(this.alpha), 2));
     ellipse(this.x, this.y, this.size);
   }
+}
+
+function windowResized() {
+  const { width, height } = getCanvasSize();
+  resizeCanvas(width, height);
 }

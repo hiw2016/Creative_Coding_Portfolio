@@ -11,13 +11,14 @@ function preload() {
   bubbleImage = loadImage("./img/bubble.png");
 }
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
+function createBubbles() {
+  bubbles = [];
+  const baseRadius = min(windowWidth, windowHeight) < 700 ? 62 : 84;
 
   for (let i = 0; i < sketches.length; i++) {
-    let x = random(110, width - 110);
-    let y = random(110, height - 110);
-    let r = random(70, 105);
+    let x = random(baseRadius, width - baseRadius);
+    let y = random(baseRadius, height - baseRadius);
+    let r = random(baseRadius * 0.8, baseRadius * 1.1);
     let vx = random(-1.6, 1.6);
     let vy = random(-1.6, 1.6);
 
@@ -28,9 +29,14 @@ function setup() {
       new Bubble(x, y, r, vx, vy, sketches[i].name, sketches[i].fileName),
     );
   }
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  createBubbles();
 
   textAlign(CENTER, CENTER);
-  textSize(14);
+  textSize(min(windowWidth, windowHeight) < 700 ? 12 : 14);
 }
 
 function draw() {
@@ -128,6 +134,7 @@ class Bubble {
     noStroke();
     fill(34, 49, 63);
     textStyle(BOLD);
+    textSize(this.r * 0.2);
     text(this.name, this.x, this.y);
     pop();
   }
@@ -147,6 +154,19 @@ function mousePressed() {
   }
 }
 
+function touchStarted() {
+  const tappedBubble = bubbles.find((bubble) =>
+    bubble.contains(touchX, touchY),
+  );
+
+  if (tappedBubble) {
+    window.location.href = `./sketches/${tappedBubble.fileName}.html`;
+    return false;
+  }
+}
+
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  textSize(min(windowWidth, windowHeight) < 700 ? 12 : 14);
+  createBubbles();
 }

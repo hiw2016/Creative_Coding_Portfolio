@@ -64,10 +64,19 @@ function draw() {
   }
 }
 
-function mousePressed() {
+function addFood(x, y) {
   for (let i = 0; i < 12; i++) {
-    food.push(new Food(mouseX + random(-15, 15), mouseY));
+    food.push(new Food(x + random(-15, 15), y));
   }
+}
+
+function mousePressed() {
+  addFood(mouseX, mouseY);
+}
+
+function touchStarted() {
+  addFood(touchX, touchY);
+  return false;
 }
 
 class Fish {
@@ -164,4 +173,9 @@ class Plant {
     strokeWeight(5);
     line(this.x, this.y, this.x, this.y - this.height);
   }
+}
+
+function windowResized() {
+  const { width, height } = getCanvasSize();
+  resizeCanvas(width, height);
 }

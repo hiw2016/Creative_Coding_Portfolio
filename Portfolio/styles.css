@@ -23,7 +23,7 @@ a {
 
 .page {
   position: relative;
-  min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
 }
 
@@ -36,7 +36,7 @@ canvas {
   top: 50%;
   left: 50%;
   z-index: 2;
-  width: 100%;
+  width: min(100% - 32px, 700px);
   transform: translate(-50%, -50%);
   text-align: center;
   pointer-events: none;
@@ -60,9 +60,9 @@ h1 {
 .sketch-page {
   position: relative;
   z-index: 1;
-  width: min(1100px, calc(100% - 32px));
+  width: min(960px, calc(100% - 24px));
   margin: 0 auto;
-  padding: 32px 0 40px;
+  padding: 20px 0 28px;
 }
 
 .sketch-header {
@@ -70,8 +70,8 @@ h1 {
   align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
-  padding: 28px;
-  margin-bottom: 22px;
+  padding: 20px;
+  margin-bottom: 18px;
   border: 1px solid var(--line);
   border-radius: 20px;
   box-shadow: var(--shadow);
@@ -103,7 +103,7 @@ h1 {
 
 .canvas-shell {
   position: relative;
-  padding: 18px;
+  padding: 12px;
   border-radius: 20px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.4);
@@ -116,4 +116,35 @@ h1 {
   height: auto !important;
   border-radius: 22px;
   overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: 1.9rem;
+  }
+
+  .title {
+    width: min(100% - 24px, 420px);
+  }
+
+  .subtitle,
+  .sketch-description {
+    font-size: 0.95rem;
+  }
+
+  .sketch-page {
+    width: min(100% - 16px, 960px);
+    padding: 16px 0 22px;
+  }
+
+  .sketch-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .canvas-shell {
+    padding: 8px;
+  }
 }

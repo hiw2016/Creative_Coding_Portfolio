@@ -30,8 +30,17 @@ function draw() {
 }
 
 function mousePressed() {
+  popBalloons(mouseX, mouseY);
+}
+
+function touchStarted() {
+  popBalloons(touchX, touchY);
+  return false;
+}
+
+function popBalloons(x, y) {
   for (let i = 0; i < balloons.length; i++) {
-    let d = dist(mouseX, mouseY, balloons[i].x, balloons[i].y);
+    let d = dist(x, y, balloons[i].x, balloons[i].y);
 
     if (d < balloons[i].size / 2) {
       balloons[i].popped = true;
